@@ -32,8 +32,8 @@ export class TreeSpawner {
     this.spawnTimer = 0;
     this.spawnInterval = Math.floor(Math.random() * 81) + 120; 
     this.treeSources = [
-      { src: 'assets/tree1.png', width: 25, height: 40 },
-      { src: 'assets/tree2.png', width: 25, height: 40 },
+      { src: 'assets/tree1.png', width: 25, height: 30},
+      { src: 'assets/tree2.png', width: 25, height: 30},
     ];
   }
 
@@ -60,3 +60,67 @@ export class TreeSpawner {
 }
 
 //------------------------------End of Trees-----------------------------//
+
+//---------------------------------Rocks------------------------------//
+
+class Rocks {
+  constructor(canvas, ctx, imgSrc, width, height) {
+    this.canvas = canvas;
+    this.ctx = ctx;
+    this.img = new Image();
+    this.img.src = imgSrc;
+    this.width = width;
+    this.height = height;
+    this.x = canvas.width; // start off-screen right
+    this.y = canvas.height - height - 32; // sit on top of ground
+    this.speed = 2;
+    this.active = true;
+  }
+
+  update() {
+    this.x -= this.speed;
+    if (this.x + this.width < 0) this.active = false; // off-screen left
+  }
+
+  draw() {
+    this.ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+  }
+}
+
+export class RocksSpawner {
+  constructor(canvas, ctx) {
+    this.canvas = canvas;
+    this.ctx = ctx;
+    this.trees = [];
+    this.spawnTimer = 0;
+    this.spawnInterval = Math.floor(Math.random() * 81) + 120; 
+    this.treeSources = [
+      { src: 'assets/Rock2.png', width: 15, height: 20 },
+      { src: 'assets/Rock1.png', width: 15, height: 10},
+      { src: 'assets/Rock3.png', width: 15, height: 25}
+    ];
+  }
+
+  spawnRocks() {
+    const type = this.treeSources[Math.floor(Math.random() * this.treeSources.length)];
+    this.trees.push(new Rocks(this.canvas, this.ctx, type.src, type.width, type.height));
+  }
+
+  update() {
+    this.spawnTimer++;
+    if (this.spawnTimer >= this.spawnInterval) {
+      this.spawnRocks();
+      this.spawnTimer = 0;
+      this.spawnInterval = Math.floor(Math.random() * 81) + 150; // 150–230 frames
+    }
+
+    for (const rock of this.trees) rock.update();
+    this.trees = this.trees.filter(t => t.active);
+  }
+
+  draw() {
+    for (const rock of this.trees) rock.draw();
+  }
+}
+
+//------------------------------End of Rocks-----------------------------//
