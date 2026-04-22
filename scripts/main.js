@@ -1,28 +1,5 @@
-import { Background, Ground } from './backgrounds.js';
-import { TreeSpawner } from './entities.js';
-import { RocksSpawner } from './entities.js';
+import { Game } from './game.js';
+
 const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-
-canvas.width = 800;
-canvas.height = 300;
-
-const bg = new Background(canvas, ctx);
-const ground = new Ground(canvas, ctx);
-const treeSpawner = new TreeSpawner(canvas, ctx);
-const rocks = new RocksSpawner(canvas, ctx); 
-
-function gameLoop() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  bg.update();
-  bg.draw();
-  ground.update();
-  ground.draw();
-treeSpawner.update();
-treeSpawner.draw();
-rocks.update();
-rocks.draw();
-  requestAnimationFrame(gameLoop);
-}
-
-bg.img.onload = () => gameLoop();
+const game = new Game(canvas);
+game.start();
