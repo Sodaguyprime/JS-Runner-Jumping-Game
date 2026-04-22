@@ -22,6 +22,10 @@ export class Background {
     this.ctx.drawImage(this.img, this.x + this.canvas.width, 0, this.canvas.width, this.canvas.height);
   }
 }
+
+//----------------------------------------------------------------Ground-----------------------------------------------------------------//
+
+
 export class Ground {
   constructor(canvas, ctx) {
     this.canvas = canvas;
