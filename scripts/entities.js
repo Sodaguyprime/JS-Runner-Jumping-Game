@@ -10,7 +10,7 @@ class Tree {
     this.height = height;
     this.x = canvas.width; // start off-screen right
     this.y = canvas.height - height - 32; // sit on top of ground
-    this.speed = 2;
+    this.speed = 1;
     this.active = true;
   }
 
@@ -20,7 +20,9 @@ class Tree {
   }
 
   draw() {
+    this.ctx.globalAlpha = 0.6;
     this.ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    this.ctx.globalAlpha = 1.0;
   }
 }
 
