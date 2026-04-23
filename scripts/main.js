@@ -9,7 +9,7 @@ async function bootstrap() {
     // All images are now in LoadedImages — safe to start the game
     const canvas = document.getElementById('gameCanvas');
     const game = new Game(canvas);
-    game.start();
+    game.init();
 
   } catch (err) {
     // If any image fails to load, show a user-friendly error instead of

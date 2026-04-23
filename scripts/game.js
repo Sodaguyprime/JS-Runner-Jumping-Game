@@ -1,7 +1,10 @@
+import { GAME_CONFIG, GameState } from './assets.js';
 import { Background, Ground } from './backgrounds.js';
 import { TreeSpawner, RocksSpawner } from './entities.js';
 import { Ostrich } from './ostrich.js';
+import { initInput } from './input.js';
 
+const { CANVAS_W, CANVAS_H, BASE_SPEED, MAX_SPEED, ACCEL, GROUND_PX, OSTRICH_H } = GAME_CONFIG;
 
 export class Game {
   constructor(canvas) {
@@ -36,12 +39,32 @@ export class Game {
   }
 
   loop() {
-    this.update();
-    this.draw();
-    requestAnimationFrame(() => this.loop());
+    GameState.animId = requestAnimationFrame(() => this.loop());
+    GameState.frame++;
+
+    if (GameState.state === 'running') {
+      this.update();
+      this.draw();
+    }
   }
 
   start() {
-    this.bg.img.onload = () => this.loop();
+
+    GameState.score   = 0;
+    GameState.speed   = BASE_SPEED;
+    GameState.frame   = 0;
+    GameState.bgX     = 0;
+    GameState.gndX    = 0;
+    GameState.isDucking = false;
+    GameState.state   = 'running';
+
+    this.ostrich.reset();
+    cancelAnimationFrame(GameState.animId);
+    this.loop();
+  }
+
+  init() {
+    initInput(this.ostrich, this.start, this.canvas);
+    this.start();   
   }
 }

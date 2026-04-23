@@ -21,16 +21,19 @@ export class Ostrich {
 
     this.animFrame = 0;
     this.animTick  = 0;
+
+    this.deathTick  = 0;
+    this.deathFrame = 0;
   }
 
   jump() {
-    // Block if in the air with no jumps left
-    if (!this.onGround) return;
+    // Block if in the air with no jump left
+    if (!this.onGround && this.jumps <= 0) return;
 
     if (this.onGround) {
       // First jump — full power
       this.vy    = JUMP_V;    // e.g. -13.5 (moves upward)
-      this.jumps = 0;          
+      this.jumps = 1;          
     } 
 
     this.onGround        = false;
@@ -49,10 +52,29 @@ export class Ostrich {
   update() {
     const { state } = GameState;
 
+
+    if (state === 'dead') {
+      this.deathTick++;
+      // Advance death frame every 8 game-frames (slow, dramatic).
+      // Math.min(3, ...) stops at the last frame — death anim plays once only.
+      if (this.deathTick % 8 === 0) {
+        this.deathFrame = Math.min(3, this.deathFrame + 1);
+      }
+      return;  // early exit — no physics when dead
+    }
     // ── Physics ──────────────────────────────────────────────────────────────
     // Velocity first, then position — correct Euler integration order.
-    // this.vy += GRAVITY;   // gravity pulls downward every frame
-    // this.y  += this.vy;   // move by current velocity
+    this.vy += GRAVITY;   // gravity pulls downward every frame
+    this.y  += this.vy;   // move by current velocity
+    // console.log(this.vy);
+
+    const groundY = GROUND_PX - OSTRICH_H;  // y when standing on ground = 80.4
+    if (this.y >= groundY) {
+      this.y        = groundY;  // snap — prevent sinking below ground strip
+      this.vy       = 0;        // kill downward velocity on landing
+      this.onGround = true;
+      this.jumps    = 1;        // restore double-jump on every landing
+    }
 
     // ── Animation tick ───────────────────────────────────────────────────────
     this.animTick++;
