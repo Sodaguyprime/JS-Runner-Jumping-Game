@@ -2,6 +2,7 @@ import { GAME_CONFIG, GameState } from './assets.js';
 import { Background, Ground } from './backgrounds.js';
 import { TreeSpawner, RocksSpawner } from './entities.js';
 import { Ostrich } from './ostrich.js';
+import { ObstacleManager } from './obstacle.js';
 import { initInput } from './input.js';
 
 const { CANVAS_W, CANVAS_H, BASE_SPEED, MAX_SPEED, ACCEL, GROUND_PX, OSTRICH_H } = GAME_CONFIG;
@@ -19,6 +20,8 @@ export class Game {
     this.treeSpawner = new TreeSpawner(canvas, this.ctx);
     this.rocks = new RocksSpawner(canvas, this.ctx);
     this.ostrich = new Ostrich(this.ctx);
+    this.obstacleManager = new ObstacleManager(this.ctx);
+
   }
 
   update() {
@@ -26,6 +29,7 @@ export class Game {
     this.ground.update();
     this.treeSpawner.update();
     this.rocks.update();
+    this.obstacleManager.update(GameState.speed);
     this.ostrich.update();
   }
 
@@ -35,6 +39,7 @@ export class Game {
     this.ground.draw();
     this.treeSpawner.draw();
     this.rocks.draw();
+    this.obstacleManager.draw();
     this.ostrich.draw();
   }
 
@@ -59,6 +64,7 @@ export class Game {
     GameState.state   = 'running';
 
     this.ostrich.reset();
+    this.obstacleManager.reset();
     cancelAnimationFrame(GameState.animId);
     this.loop();
   }

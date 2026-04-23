@@ -58,12 +58,12 @@ export const GAME_CONFIG = {
   //   60 fps ÷ 5 = 12 animation frames/sec
 
   // Obstacle spacing
-  MIN_GAP:     320,    // minimum px between obstacle right edge → next left edge
-  MAX_GAP:     680,    // maximum px (random in this range, then scaled by speed)
+  MIN_GAP:     220,    // minimum px between obstacle right edge → next left edge
+  MAX_GAP:     300,    // maximum px (random in this range, then scaled by speed)
   MIN_GAP_ABS: 200,    // absolute floor — gap never shrinks below this
 
   // Collision leniency
-  HIT_SHRINK:  5,      // hero hitbox shrunk by this many px on each side (forgiveness)
+  HIT_SHRINK:  5,      // ostrich hitbox shrunk by this many px on each side (forgiveness)
 };
 
 
