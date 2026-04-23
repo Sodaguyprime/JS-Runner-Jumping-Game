@@ -1,7 +1,8 @@
+import { LoadedImages, GAME_CONFIG } from "./assets.js";
+
 export class Background {
-  constructor(canvas) {
-    this.canvas = canvas;
-    this.ctx = canvas.getContext('2d');
+  constructor(ctx) {
+    this.ctx = ctx;
     this.img = new Image();
     this.img.src = '../assets/Backgrounds.png';
     this.x = 0;
@@ -11,15 +12,15 @@ export class Background {
   update() {
     this.x -= this.speed;
     // Reset when the image has scrolled one full width
-    if (this.x <= -this.canvas.width) {
+    if (this.x <= -GAME_CONFIG.CANVAS_W) {
       this.x = 0;
     }
   }
 
   draw() {
     // Draw it twice side by side so there's no gap when it scrolls
-    this.ctx.drawImage(this.img, this.x, 0, this.canvas.width, this.canvas.height);
-    this.ctx.drawImage(this.img, this.x + this.canvas.width, 0, this.canvas.width, this.canvas.height);
+    this.ctx.drawImage(LoadedImages.bg, this.x, 0, GAME_CONFIG.CANVAS_W, GAME_CONFIG.CANVAS_H);
+    this.ctx.drawImage(LoadedImages.bg, this.x + GAME_CONFIG.CANVAS_W, 0, GAME_CONFIG.CANVAS_W, GAME_CONFIG.CANVAS_H);
   }
 }
 
@@ -27,24 +28,21 @@ export class Background {
 
 
 export class Ground {
-  constructor(canvas, ctx) {
-    this.canvas = canvas;
+  constructor(ctx) {
     this.ctx = ctx;
-    this.img = new Image();
-    this.img.src = 'assets/Ground.png';
     this.x = 0;
     this.speed = 2;
     this.height = 32;
-    this.y = canvas.height - this.height;
+    this.y = GAME_CONFIG.CANVAS_H - this.height;
   }
 
   update() {
     this.x -= this.speed;
-    if (this.x <= -this.canvas.width) this.x = 0;
+    if (this.x <= -GAME_CONFIG.CANVAS_W) this.x = 0;
   }
 
   draw() {
-    this.ctx.drawImage(this.img, this.x, this.y, this.canvas.width, this.height);
-    this.ctx.drawImage(this.img, this.x + this.canvas.width, this.y, this.canvas.width, this.height);
+    this.ctx.drawImage(LoadedImages.ground, this.x, this.y, GAME_CONFIG.CANVAS_W, this.height);
+    this.ctx.drawImage(LoadedImages.ground, this.x + GAME_CONFIG.CANVAS_W, this.y, GAME_CONFIG.CANVAS_W, this.height);
   }
 }

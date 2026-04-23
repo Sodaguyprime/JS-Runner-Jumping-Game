@@ -25,17 +25,17 @@ export const SHEETS = {
 
 export const GAME_CONFIG = {
   // Canvas
-  CANVAS_W:    700,
-  CANVAS_H:    200,
+  CANVAS_W:    800,
+  CANVAS_H:    300,
 
   // World geometry
-  SCALE:       2.8,    // pixels: upscale 32×32 sprites to ~90×90 on screen
-  GROUND_PX:   170,    // y-coordinate of the ground surface (H - 30)
+  SCALE:       2.5,    // pixels: upscale 32×32 sprites to ~90×90 on screen
+  GROUND_PX:   268,    // y-coordinate of the ground surface (H - 30)
   OSTRICH_X:   80,     // fixed horizontal position of the hero
 
   // Derived sprite dimensions (computed once, stored for convenience)
-  OSTRICH_W:   32 * 2.8,   // = 89.6
-  OSTRICH_H:   32 * 2.8,   // = 89.6
+  OSTRICH_W:   32 * 2.5,   // = 89.6
+  OSTRICH_H:   32 * 2.5,   // = 89.6
 
   // Background tile sizes (original PNG dimensions)
   BG_W: 254,

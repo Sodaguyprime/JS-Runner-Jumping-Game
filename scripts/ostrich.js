@@ -8,7 +8,8 @@ const {
 } = GAME_CONFIG;
 
 export class Ostrich {
-  constructor() {
+  constructor(ctx) {
+    this.ctx = ctx
     this.x = OSTRICH_X;
     this.y = GROUND_PX - OSTRICH_H; // top of sprite so feet touch ground
 
@@ -50,8 +51,8 @@ export class Ostrich {
 
     // ── Physics ──────────────────────────────────────────────────────────────
     // Velocity first, then position — correct Euler integration order.
-    this.vy += GRAVITY;   // gravity pulls downward every frame
-    this.y  += this.vy;   // move by current velocity
+    // this.vy += GRAVITY;   // gravity pulls downward every frame
+    // this.y  += this.vy;   // move by current velocity
 
     // ── Animation tick ───────────────────────────────────────────────────────
     this.animTick++;
@@ -71,7 +72,8 @@ export class Ostrich {
     }
   }
 
-  draw(ctx) {
+  draw() {
+    let ctx = this.ctx;
     ctx.save();
     ctx.imageSmoothingEnabled = false;  // keep pixel art crisp — no blurring
 

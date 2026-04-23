@@ -1,5 +1,7 @@
 import { Background, Ground } from './backgrounds.js';
 import { TreeSpawner, RocksSpawner } from './entities.js';
+import { Ostrich } from './ostrich.js';
+
 
 export class Game {
   constructor(canvas) {
@@ -9,10 +11,11 @@ export class Game {
     canvas.width = 800;
     canvas.height = 300;
 
-    this.bg = new Background(canvas);
-    this.ground = new Ground(canvas, this.ctx);
+    this.bg = new Background(this.ctx);
+    this.ground = new Ground(this.ctx);
     this.treeSpawner = new TreeSpawner(canvas, this.ctx);
     this.rocks = new RocksSpawner(canvas, this.ctx);
+    this.ostrich = new Ostrich(this.ctx);
   }
 
   update() {
@@ -20,6 +23,7 @@ export class Game {
     this.ground.update();
     this.treeSpawner.update();
     this.rocks.update();
+    this.ostrich.update();
   }
 
   draw() {
@@ -28,6 +32,7 @@ export class Game {
     this.ground.draw();
     this.treeSpawner.draw();
     this.rocks.draw();
+    this.ostrich.draw();
   }
 
   loop() {
