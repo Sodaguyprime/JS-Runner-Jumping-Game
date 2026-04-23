@@ -31,7 +31,7 @@ export const GAME_CONFIG = {
   // World geometry
   SCALE:       2.5,    // pixels: upscale 32×32 sprites to ~90×90 on screen
   GROUND_PX:   268,    // y-coordinate of the ground surface (H - 30)
-  OSTRICH_X:   80,     // fixed horizontal position of the hero
+  OSTRICH_X:   80,     // fixed horizontal position of the ostrich
 
   // Derived sprite dimensions (computed once, stored for convenience)
   OSTRICH_W:   32 * 2.5,   // = 89.6
@@ -78,7 +78,7 @@ export const GameState = {
   best:       0,
   speed:      4.5,     // starts at BASE_SPEED
 
-  // Hero physics flag (read by hero.js and obstacle.js)
+  // Ostrich physics flag (read by ostrich.js and obstacle.js)
   isDucking:  false,
 
   // Scroll offsets for tiled layers

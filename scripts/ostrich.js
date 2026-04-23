@@ -1,6 +1,21 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// ostrich.js
+//
+// Defines and exports the Ostrich class.
+// The Ostrich is the ostrich the player controls.
+//
+// Responsibilities:
+//   - Track position, velocity, animation state
+//   - Respond to jump() and duck() / unduck() calls
+//   - Apply gravity and ground collision each frame via update()
+//   - Draw the correct sprite frame via draw(ctx)
+//   - Expose a collision hitbox via computed getters
+// ─────────────────────────────────────────────────────────────────────────────
+
 import { GAME_CONFIG, SHEETS, LoadedImages, GameState } from './assets.js';
 
 
+// Destructure the constants we use so the code reads cleanly
 const {
   OSTRICH_X, OSTRICH_W, OSTRICH_H,
   GROUND_PX, GRAVITY, JUMP_V,
@@ -13,19 +28,65 @@ export class Ostrich {
     this.x = OSTRICH_X;
     this.y = GROUND_PX - OSTRICH_H; // top of sprite so feet touch ground
 
+    // ── Physics ─────────────────────────────────────────────────────────────
     // vy (vertical velocity) is negative when moving up, positive when falling.
+    // Gravity adds +GRAVITY to vy every frame.
     this.vy = 0;
 
+    // ── Jump state ──────────────────────────────────────────────────────────
+    // onGround flips to false on jump and back to true on landing.
+    // jumps counts remaining jumps: starts at 2 (double-jump), restored on land.
     this.onGround = true;
     this.jumps = 1;
 
+    // ── Running animation ────────────────────────────────────────────────────
+    // animFrame: which column of the sprite sheet is currently displayed.
+    // animTick:  counts game-frames; resets and advances animFrame every ANIM_RATE ticks.
     this.animFrame = 0;
     this.animTick  = 0;
 
+    // ── Death animation ──────────────────────────────────────────────────────
+    // deathTick:  counts game-frames since death began.
+    // deathFrame: which death-sprite column to show (0–3, never loops back).
     this.deathTick  = 0;
     this.deathFrame = 0;
   }
 
+  // ── Computed hitbox properties ─────────────────────────────────────────────
+  //
+  // The hitbox is smaller than the visible sprite to be forgiving to the player.
+  // When ducking the hitbox also gets shorter, making it possible to slide under
+  // aerial obstacles.
+  //
+  // These are getter methods (not stored values) so they always reflect the
+  // current isDucking state without needing to be manually updated.
+
+  get hitW() {
+    // Ducking: 60% of sprite width.  Standing: 55%.
+    return GameState.isDucking ? OSTRICH_W * 0.60 : OSTRICH_W * 0.55;
+  }
+
+  get hitH() {
+    // Ducking: DUCK_SHRINK (55%) of sprite height.  Standing: 80%.
+    return GameState.isDucking ? OSTRICH_H * DUCK_SHRINK : OSTRICH_H * 0.80;
+  }
+
+  get hitX() {
+    // Centre the hitbox horizontally inside the sprite.
+    // (OSTRICH_W - this.hitW) is the total empty space; halving gives one side.
+    return this.x + (OSTRICH_W - this.hitW) / 2;
+  }
+
+  get hitY() {
+    // Align the hitbox to the BOTTOM of the sprite (feet and body region).
+    // The head sticks above the hitbox which feels fair.
+    return this.y + (OSTRICH_H - this.hitH);
+  }
+
+  // ── jump() ────────────────────────────────────────────────────────────────
+  //
+  // Called by input.js when the player presses Space / ArrowUp / taps screen.
+  //
   jump() {
     // Block if in the air with no jump left
     if (!this.onGround && this.jumps <= 0) return;
@@ -41,6 +102,11 @@ export class Ostrich {
     // play jump sound
   }
 
+  // ── duck() / unduck() ─────────────────────────────────────────────────────
+  //
+  // Duck is only allowed while on the ground.
+  // unduck has no guard — it's always safe to stop ducking.
+  //
   duck() {
     if (this.onGround) GameState.isDucking = true;
   }
@@ -49,10 +115,15 @@ export class Ostrich {
     GameState.isDucking = false;
   }
 
+  // ── update() ──────────────────────────────────────────────────────────────
+  //
+  // Called once per frame from game.js before draw().
+  // Handles: death-animation ticking, gravity, ground collision, anim cycling.
+  //
   update() {
     const { state } = GameState;
 
-
+    // ── Death state: only advance death animation, skip all physics ──────────
     if (state === 'dead') {
       this.deathTick++;
       // Advance death frame every 8 game-frames (slow, dramatic).
@@ -68,6 +139,7 @@ export class Ostrich {
     this.y  += this.vy;   // move by current velocity
     // console.log(this.vy);
 
+    // ── Ground collision ─────────────────────────────────────────────────────
     const groundY = GROUND_PX - OSTRICH_H;  // y when standing on ground = 80.4
     if (this.y >= groundY) {
       this.y        = groundY;  // snap — prevent sinking below ground strip
@@ -94,6 +166,16 @@ export class Ostrich {
     }
   }
 
+  // ── draw(ctx) ─────────────────────────────────────────────────────────────
+  //
+  // Picks the correct image + frame based on current state, then blits it
+  // onto the canvas using the 9-argument form of drawImage:
+  //   drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh)
+  //   sx = sourceX = animFrame × frameWidth  (selects the column in the sheet)
+  //   sw, sh = source dimensions of one frame
+  //   dx, dy = destination position on canvas
+  //   dw, dh = how large to draw it (SCALE applied here)
+  //
   draw() {
     let ctx = this.ctx;
     ctx.save();
@@ -103,7 +185,7 @@ export class Ostrich {
 
     if (state === 'dead') {
       // Death sprite: OstrichDeath.png — frames are 80px wide (not 32!)
-      // Position is fixed to ground even if hero was mid-air when it died.
+      // Position is fixed to ground even if ostrich was mid-air when it died.
       const fw = SHEETS.death.fw;  // 80
       const fh = SHEETS.death.fh;  // 32
       ctx.drawImage(
@@ -153,7 +235,10 @@ export class Ostrich {
     ctx.restore();
   }
 
-
+  // ── reset() ───────────────────────────────────────────────────────────────
+  //
+  // Called by startGame() in game.js to fully reset the ostrich for a new run.
+  //
   reset() {
     this.x          = OSTRICH_X;
     this.y          = GROUND_PX - OSTRICH_H;

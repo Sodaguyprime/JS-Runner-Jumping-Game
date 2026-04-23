@@ -3,6 +3,7 @@ import { Background, Ground } from './backgrounds.js';
 import { TreeSpawner, RocksSpawner } from './entities.js';
 import { Ostrich } from './ostrich.js';
 import { ObstacleManager } from './obstacle.js';
+import { collides }               from './collision.js';
 import { initInput } from './input.js';
 
 const { CANVAS_W, CANVAS_H, BASE_SPEED, MAX_SPEED, ACCEL, GROUND_PX, OSTRICH_H } = GAME_CONFIG;
@@ -43,6 +44,16 @@ export class Game {
     this.ostrich.draw();
   }
 
+  // ── triggerDeath() ────────────────────────────────────────────────────────────
+//
+// Switches the game to the 'dead' state.
+// The death animation plays for ~0.9 seconds before the Game Over overlay
+// appears — giving the player time to see what happened.
+//
+  triggerDeath() {
+    GameState.state = 'dead';
+  }
+
   loop() {
     GameState.animId = requestAnimationFrame(() => this.loop());
     GameState.frame++;
@@ -50,6 +61,11 @@ export class Game {
     if (GameState.state === 'running') {
       this.update();
       this.draw();
+
+      if (collides(this.ostrich, this.obstacleManager)) {
+        this.triggerDeath();
+        return;
+      }
     }
   }
 
