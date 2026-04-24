@@ -70,6 +70,7 @@ export class Obstacle {
     // Falcon wing-flap animation
     this.animFrame = 0;  // which of the 4 falcon frames to draw
     this.animTick  = 0;  // counts game-frames; flips frame every 4 ticks
+    this.scored = false; 
   }
 
   // ── update(speed) ─────────────────────────────────────────────────────────
