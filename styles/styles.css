@@ -29,3 +29,28 @@ canvas {
   pointer-events: none; /* so it doesn't block clicks on the canvas */
   z-index: 10;
 }
+
+#menu {
+  position: absolute;
+  inset: 0;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  margin: 0;
+}
+
+#play-btn {
+  font-family: monospace;
+  font-size: 24px;
+  padding: 16px 48px;
+  cursor: pointer;
+  border: 3px solid black;
+  background: white;
+}
+
+#play-btn:hover {
+  background: black;
+  color: white;
+}

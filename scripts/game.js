@@ -94,7 +94,14 @@ export class Game {
   }
 
   init() {
-    initInput(this.ostrich, this.start, this.canvas);
-    this.start();   
-  }
+  const menu = document.getElementById('menu');
+  const playBtn = document.getElementById('play-btn');
+
+  playBtn.addEventListener('click', () => {
+    menu.style.display = 'none';
+    this.start();
+  });
+
+  initInput(this.ostrich, this.start.bind(this), this.canvas);
+}
 }
