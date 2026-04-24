@@ -45,16 +45,16 @@ export const GAME_CONFIG = {
 
   // Physics
   GRAVITY:     0.6,    // px/frame² added to vy every frame
-  JUMP_V:     -13.5,   // vy on first jump (negative = upward)
-  DUCK_SHRINK: 0.55,   // hitbox shrinks to 55% height when ducking
+  JUMP_V:     -13.5,    // vy on first jump (negative = upward)
+  DUCK_SHRINK: 0.65,   // hitbox shrinks to 65% height when ducking
 
   // Speed
   BASE_SPEED:  4.5,    // starting scroll speed (px/frame)
   MAX_SPEED:   11.0,   // hard cap — game never goes faster
   ACCEL:       0.0006, // speed added per frame (very gentle ramp)
 
-  // Animation
-  ANIM_RATE:   5,      // advance one sprite frame every N game-frames
+  // Animation 
+  ANIM_RATE:   9,      // advance one sprite frame every N game-frames
   //   60 fps ÷ 5 = 12 animation frames/sec
 
   // Obstacle spacing

@@ -1,6 +1,6 @@
 import { GAME_CONFIG, GameState } from './assets.js';
 import { Background, Ground } from './backgrounds.js';
-import { TreeSpawner, RocksSpawner } from './entities.js';
+import { TreeSpawner } from './entities.js';
 import { Ostrich } from './ostrich.js';
 import { ObstacleManager } from './obstacle.js';
 import { collides }               from './collision.js';
@@ -19,7 +19,6 @@ export class Game {
     this.bg = new Background(this.ctx);
     this.ground = new Ground(this.ctx);
     this.treeSpawner = new TreeSpawner(canvas, this.ctx);
-    this.rocks = new RocksSpawner(canvas, this.ctx);
     this.ostrich = new Ostrich(this.ctx);
     this.obstacleManager = new ObstacleManager(this.ctx);
 
@@ -29,7 +28,6 @@ export class Game {
     this.bg.update();
     this.ground.update();
     this.treeSpawner.update();
-    this.rocks.update();
     this.obstacleManager.update(GameState.speed);
     this.ostrich.update();
   }
@@ -39,7 +37,6 @@ export class Game {
     this.bg.draw();
     this.ground.draw();
     this.treeSpawner.draw();
-    this.rocks.draw();
     this.obstacleManager.draw();
     this.ostrich.draw();
   }

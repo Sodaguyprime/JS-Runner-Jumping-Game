@@ -63,24 +63,24 @@ export class Ostrich {
 
   get hitW() {
     // Ducking: 60% of sprite width.  Standing: 55%.
-    return GameState.isDucking ? OSTRICH_W * 0.60 : OSTRICH_W * 0.55;
+    return GameState.isDucking ? OSTRICH_W * 1.10 : OSTRICH_W * 0.55;
   }
 
   get hitH() {
     // Ducking: DUCK_SHRINK (55%) of sprite height.  Standing: 80%.
-    return GameState.isDucking ? OSTRICH_H * DUCK_SHRINK : OSTRICH_H * 0.80;
+    return GameState.isDucking ? OSTRICH_H * 0.38 : OSTRICH_H * 0.80;
   }
 
   get hitX() {
     // Centre the hitbox horizontally inside the sprite.
     // (OSTRICH_W - this.hitW) is the total empty space; halving gives one side.
-    return this.x + (OSTRICH_W - this.hitW) / 2;
+    return this.x  - 10 + (OSTRICH_W - this.hitW) / 2 ;
   }
 
   get hitY() {
-    // Align the hitbox to the BOTTOM of the sprite (feet and body region).
+    // Align the hitbox to the BOTTOM of the sprite (feet  and body region).
     // The head sticks above the hitbox which feels fair.
-    return this.y + (OSTRICH_H - this.hitH);
+    return this.y -10 + (OSTRICH_H - this.hitH);
   }
 
   // ── jump() ────────────────────────────────────────────────────────────────
@@ -231,7 +231,10 @@ export class Ostrich {
         this.x, this.y, OSTRICH_W, OSTRICH_H
       );
     }
-
+// Debug hitbox
+ctx.strokeStyle = 'rgba(0, 150, 255, 0.8)';
+ctx.lineWidth = 2;
+ctx.strokeRect(this.hitX, this.hitY, this.hitW, this.hitH);
     ctx.restore();
   }
 

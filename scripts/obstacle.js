@@ -24,26 +24,24 @@ const {
   MIN_GAP,
   MAX_GAP,
   MIN_GAP_ABS,
-} = GAME_CONFIG;
+} = GAME_CONFIG; 
 
 const OBSTACLE_TYPES = [
   // Ground obstacles — player must jump over them
   { img: 'rock1', w: 23, h: 15, aerial: false },
   { img: 'rock2', w: 32, h: 32, aerial: false },
   { img: 'rock3', w: 23, h: 15, aerial: false },
-  { img: 'tree1', w: 32, h: 32, aerial: false },
-  { img: 'tree2', w: 32, h: 32, aerial: false },
 
   // Aerial obstacle — player must duck under it
   {
     img: 'falcon',
-    w: 32, h: 32,
+    w: 22, h: 22, 
     aerial: true,
-    altitudes: [0.35, 0.55, 0.75],
+    altitudes: [0.55, 0.65, 0.75],
   },
 ];
-
-export class Obstacle {
+ 
+export class Obstacle { 
   // type     — one entry from OBSTACLE_TYPES
   // x        — starting x position (off the right edge of the canvas)
   // scale    — random visual scale factor (2.0 – 2.6×)
@@ -77,7 +75,7 @@ export class Obstacle {
   // ── update(speed) ─────────────────────────────────────────────────────────
   //
   // Move left by the current game speed and advance falcon animation.
-  // Called by ObstacleManager.update() once per frame.
+  // Called by ObstacleManager.update( ) once per frame.
   //
   update(speed) {
     this.x -= speed;   // scroll left
@@ -85,7 +83,7 @@ export class Obstacle {
     // Falcon-only: cycle through 4 wing-flap frames
     if (this.type.aerial) {
       this.animTick++;
-      if (this.animTick >= 4) {
+      if (this.animTick >= 10) {
         this.animTick  = 0;
         this.animFrame = (this.animFrame + 1) % 4;  // cycle 0→1→2→3→0
       }
@@ -166,7 +164,7 @@ export class ObstacleManager {
   //
   _pickType() {
     if (Math.random() < 0.20) {
-      return OBSTACLE_TYPES[5]; // index 5 = falcon
+      return OBSTACLE_TYPES[3]; // index 5 = falcon
     }
     // Randomly pick one of the 5 ground types
     return OBSTACLE_TYPES[Math.floor(Math.random() * 5)];
