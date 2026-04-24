@@ -1,12 +1,15 @@
 body {
   margin: 0;
-  background: #000;
   height: 100vh; 
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   overflow: hidden; 
   position: relative;
+  background-image: url('../assets/menu-screen.png'); /* Ensure the filename matches your saved image */
+  background-size: cover;    /* Scales image to cover the entire screen */
+  background-position: center bottom; /* Keeps the ground aligned at the bottom */
+  background-repeat: no-repeat;
 }
 
 canvas {
@@ -15,6 +18,7 @@ canvas {
   width: 100%; 
   height: 100%;
   position: relative;
+  background: transparent;
 }
 
 #score-display {
@@ -33,36 +37,73 @@ canvas {
 #menu {
   position: absolute;
   inset: 0;
-  background: white;
+  background: transparent; 
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 100;
+  gap: 0; 
+}
+
+.title-small {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 24px;
+  color: #f0d5a3;
+  text-shadow: 3px 3px 0px #8b5e34; 
   margin: 0;
+  letter-spacing: 2px;
+}
+
+.title-large {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 52px;
+  color: #f0d5a3; 
+  text-shadow: 5px 5px 0px #8b5e34;
+  margin: 0 0 40px 0;
+  letter-spacing: 4px;
 }
 
 #play-btn {
-  font-family: monospace;
-  font-size: 24px;
-  padding: 16px 48px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 28px;
+  padding: 20px 60px;
   cursor: pointer;
-  border: 3px solid black;
-  background: white;
+  background: #6b4fa0;
+  color: #f0d5a3; 
+  border: 6px solid #4a3475; 
+  box-shadow: 0px 8px 0px #322152; 
+  image-rendering: pixelated;
+  transition: transform 0.1s;
+}
+#play-btn:hover {
+  background: #7d5fb8;
+  transform: translateY(-2px);
 }
 
-#play-btn:hover {
-  background: black;
+#play-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0px 4px 0px #322152;
+}
+
+.menu-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
   color: white;
+  position: absolute;
+  bottom: 16px;
 }
 
 #game-over {
   position: absolute;
   inset: 0;
-  background: transparent;
+
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 100;
+  gap: 12px;
 }
 
 #retry-btn {

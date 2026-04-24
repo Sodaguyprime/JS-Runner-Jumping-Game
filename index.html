@@ -5,13 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <!-- Link to CSS file in styles folder -->
+     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
 
     <div id="menu">
-     <button id="play-btn">PLAY</button>
-    </div>
+  <h1 class="title-small">THE</h1>
+  <h1 class="title-large">ARID RUN</h1>
+  <button id="play-btn">PLAY</button>
+  <p class="menu-label">MAIN MENU</p>
+</div>
     <div id="game-over" style="display:none">
   <button id="retry-btn">RETRY</button>
 </div>
@@ -21,7 +25,8 @@
     </div>
     
     <canvas id="gameCanvas"></canvas>
-
+    <audio id="bg-music" src="assets/background_music.m4a" loop></audio>
+    <audio id="lose-sound" src="assets/loose_sound_effect.mp3"></audio>
     <script type="module" src="scripts/main.js"  defer></script>
 </body>
 </html>

@@ -25,13 +25,19 @@ export class Game {
   }
 
   update() {
-    GameState.score++;
     this.bg.update();
     this.ground.update();
     this.treeSpawner.update();
     this.obstacleManager.update(GameState.speed);
     this.ostrich.update();
-    document.getElementById('current-score').textContent = GameState.score;
+     // Score: count obstacles passed
+  for (const obs of this.obstacleManager.getAll()) {
+    if (!obs.scored && obs.x + obs.w < GAME_CONFIG.OSTRICH_X) {
+      obs.scored = true;
+      GameState.score++;
+      document.getElementById('current-score').textContent = GameState.score;
+    }
+  }
   }
 
   draw() {
@@ -59,6 +65,7 @@ export class Game {
   }
 
   document.getElementById('game-over').style.display = 'flex';
+   document.getElementById('lose-sound').play();
 }
 
   loop() {
@@ -77,10 +84,11 @@ export class Game {
   }
 
   start() {
+    document.getElementById('bg-music').play();
     GameState.best = localStorage.getItem('bestScore') || 0;
     document.getElementById('best-score').textContent = GameState.best;
     GameState.score = 0;
-    GameState.score   = 0;
+    document.getElementById('current-score').textContent = 0;  // ← add this
     GameState.speed   = BASE_SPEED;
     GameState.frame   = 0;
     GameState.bgX     = 0;

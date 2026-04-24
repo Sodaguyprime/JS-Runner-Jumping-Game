@@ -231,10 +231,6 @@ export class Ostrich {
         this.x, this.y, OSTRICH_W, OSTRICH_H
       );
     }
-// Debug hitbox
-ctx.strokeStyle = 'rgba(0, 150, 255, 0.8)';
-ctx.lineWidth = 2;
-ctx.strokeRect(this.hitX, this.hitY, this.hitW, this.hitH);
     ctx.restore();
   }
 
