@@ -54,3 +54,27 @@ canvas {
   background: black;
   color: white;
 }
+
+#game-over {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+#retry-btn {
+  font-family: monospace;
+  font-size: 24px;
+  padding: 16px 48px;
+  cursor: pointer;
+  border: 3px solid black;
+  background: white;
+}
+
+#retry-btn:hover {
+  background: black;
+  color: white;
+}

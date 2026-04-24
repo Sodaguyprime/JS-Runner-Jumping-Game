@@ -50,15 +50,16 @@ export class Game {
 // appears — giving the player time to see what happened.
 //
   triggerDeath() {
-    GameState.state = 'dead';
-    console.log('Player died! Score:', GameState.score);
-    const best = localStorage.getItem('bestScore') || 0;
-    if (GameState.score > best) {
+  GameState.state = 'dead';
+  console.log('Score:', GameState.score);
+
+  const best = localStorage.getItem('bestScore') || 0;
+  if (GameState.score > best) {
     localStorage.setItem('bestScore', GameState.score);
-    console.log('New best:', GameState.score);
-    document.getElementById('best-score').textContent = localStorage.getItem('bestScore') || 0;
   }
-  }
+
+  document.getElementById('game-over').style.display = 'flex';
+}
 
   loop() {
     GameState.animId = requestAnimationFrame(() => this.loop());
@@ -94,6 +95,11 @@ export class Game {
   }
 
   init() {
+    const retryBtn = document.getElementById('retry-btn');
+retryBtn.addEventListener('click', () => {
+  document.getElementById('game-over').style.display = 'none';
+  this.start();
+});
   const menu = document.getElementById('menu');
   const playBtn = document.getElementById('play-btn');
 
