@@ -103,6 +103,8 @@ export class Game {
   }
 
   init() {
+    this.bgMusic = document.getElementById('bg-music');
+  this.loseSound = document.getElementById('lose-sound');
     const retryBtn = document.getElementById('retry-btn');
 retryBtn.addEventListener('click', () => {
   document.getElementById('game-over').style.display = 'none';
@@ -117,5 +119,14 @@ retryBtn.addEventListener('click', () => {
   });
 
   initInput(this.ostrich, this.start.bind(this), this.canvas);
+  const muteBtn = document.getElementById('mute-btn');
+let muted = false;
+
+muteBtn.addEventListener('click', () => {
+  muted = !muted;
+  this.bgMusic.muted = muted;
+  document.getElementById('lose-sound').muted = muted;
+  muteBtn.textContent = muted ? '🔇' : '🔊';
+});
 }
 }

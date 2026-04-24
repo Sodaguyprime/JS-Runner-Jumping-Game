@@ -85,7 +85,13 @@ canvas {
   transform: translateY(4px);
   box-shadow: 0px 4px 0px #322152;
 }
-
+#mute-btn {
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  margin-top: 8px;
+}
 .menu-label {
   font-family: 'Press Start 2P', monospace;
   font-size: 14px;
