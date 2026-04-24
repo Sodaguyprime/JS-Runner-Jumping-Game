@@ -1,16 +1,16 @@
 export const ASSET_PATHS = {
-  bg:     './../assets/Backgrounds.png',
-  ground: './../assets/Ground.png',
-  run:    './../assets/OstrichRun.png',
-  jump:   './../assets/OstrichJump-Sheet.png',
-  death:  './../assets/OstrichDeath.png',
-  down:   './../assets/Ostrich with its head down.png',
-  falcon: './../assets/falconAnim.png',
-  rock1:  './../assets/Rock1.png',
-  rock2:  './../assets/Rock2.png',
-  rock3:  './../assets/Rock3.png',
-  tree1:  './../assets/tree1.png',
-  tree2:  './../assets/tree2.png',
+  bg:     '../assets/Backgrounds.png',
+  ground: '../assets/Ground.png',
+  run:    '../assets/OstrichRun.png',
+  jump:   '../assets/OstrichJump-Sheet.png',
+  death:  '../assets/OstrichDeath.png',
+  down:   '../assets/Ostrich with its head down.png',
+  falcon: '../assets/falconAnim.png',
+  rock1:  '../assets/Rock1.png',
+  rock2:  '../assets/Rock2.png',
+  rock3:  '../assets/Rock3.png',
+  tree1:  '../assets/tree1.png',
+  tree2:  '../assets/tree2.png',
 };
 
 export const LoadedImages = {};
