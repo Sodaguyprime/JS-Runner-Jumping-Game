@@ -1,81 +1,100 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  height: 100vh; 
+  height: 100vh;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  overflow: hidden; 
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #1a1208;
+  background-image: radial-gradient(ellipse at 50% 50%, #2e1f0a 0%, #0e0b05 100%);
+}
+
+#game-wrapper {
   position: relative;
-  background-image: url('../assets/menu-screen.png'); /* Ensure the filename matches your saved image */
-  background-size: cover;    /* Scales image to cover the entire screen */
-  background-position: center bottom; /* Keeps the ground aligned at the bottom */
-  background-repeat: no-repeat;
+  width: 800px;
+  height: 300px;
+  flex-shrink: 0;
+  transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+              height 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow:
+    0 0 0 2px #5c3a1a,
+    0 0 40px 8px rgba(180, 120, 40, 0.25),
+    0 8px 40px rgba(0,0,0,0.7);
+}
+
+#game-wrapper.expanded {
+  width: 90vw;
+  height: 60vh;
 }
 
 canvas {
   display: block;
   image-rendering: pixelated;
-  width: 100%; 
+  width: 100%;
   height: 100%;
-  position: relative;
   background: transparent;
 }
 
 #score-display {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 10px;
+  right: 12px;
   display: flex;
   gap: 24px;
-  font-family: monospace;
-  font-size: 20px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 13px;
   color: rgb(255, 255, 255);
-  pointer-events: none; /* so it doesn't block clicks on the canvas */
+  pointer-events: none;
   z-index: 10;
+  text-shadow: 1px 1px 0 #000;
 }
 
 #menu {
   position: absolute;
   inset: 0;
-  background: transparent; 
+  background: transparent;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 100;
-  gap: 0; 
+  gap: 0;
 }
 
 .title-small {
   font-family: 'Press Start 2P', monospace;
-  font-size: 24px;
+  font-size: 14px;
   color: #f0d5a3;
-  text-shadow: 3px 3px 0px #8b5e34; 
+  text-shadow: 2px 2px 0px #8b5e34;
   margin: 0;
   letter-spacing: 2px;
 }
 
 .title-large {
   font-family: 'Press Start 2P', monospace;
-  font-size: 52px;
-  color: #f0d5a3; 
-  text-shadow: 5px 5px 0px #8b5e34;
-  margin: 0 0 40px 0;
-  letter-spacing: 4px;
+  font-size: 32px;
+  color: #f0d5a3;
+  text-shadow: 4px 4px 0px #8b5e34;
+  margin: 0 0 24px 0;
+  letter-spacing: 3px;
 }
 
 #play-btn {
   font-family: 'Press Start 2P', monospace;
-  font-size: 28px;
-  padding: 20px 60px;
+  font-size: 16px;
+  padding: 12px 36px;
   cursor: pointer;
   background: #6b4fa0;
-  color: #f0d5a3; 
-  border: 6px solid #4a3475; 
-  box-shadow: 0px 8px 0px #322152; 
-  image-rendering: pixelated;
+  color: #f0d5a3;
+  border: 4px solid #4a3475;
+  box-shadow: 0px 6px 0px #322152;
   transition: transform 0.1s;
 }
+
 #play-btn:hover {
   background: #7d5fb8;
   transform: translateY(-2px);
@@ -83,28 +102,29 @@ canvas {
 
 #play-btn:active {
   transform: translateY(4px);
-  box-shadow: 0px 4px 0px #322152;
+  box-shadow: 0px 2px 0px #322152;
 }
+
 #mute-btn {
   background: transparent;
   border: none;
-  font-size: 28px;
+  font-size: 20px;
   cursor: pointer;
   margin-top: 8px;
 }
+
 .menu-label {
   font-family: 'Press Start 2P', monospace;
-  font-size: 14px;
+  font-size: 10px;
   color: white;
   position: absolute;
-  bottom: 16px;
+  bottom: 10px;
 }
 
 #game-over {
   position: absolute;
   inset: 0;
-
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -113,15 +133,16 @@ canvas {
 }
 
 #retry-btn {
-  font-family: monospace;
-  font-size: 24px;
-  padding: 16px 48px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 16px;
+  padding: 12px 32px;
   cursor: pointer;
-  border: 3px solid black;
-  background: white;
+  border: 3px solid #f0d5a3;
+  background: #1a0e00;
+  color: #f0d5a3;
 }
 
 #retry-btn:hover {
-  background: black;
-  color: white;
+  background: #f0d5a3;
+  color: #1a0e00;
 }
