@@ -44,9 +44,9 @@ export const GAME_CONFIG = {
   ACCEL:       0.002,
 
   ANIM_RATE:   9,
-  MIN_GAP:     220,
-  MAX_GAP:     300,
-  MIN_GAP_ABS: 200,
+  MIN_GAP:     320,
+  MAX_GAP:     400,
+  MIN_GAP_ABS: 300,
   HIT_SHRINK:  5,
 };
 
