@@ -48,18 +48,39 @@ function draw() {
   }
 }
 
+
+function fadeOutMusic(duration = 1500) {
+  if (!bgMusic) return;
+  const startVol = bgMusic.volume;
+  const startTime = performance.now();
+ 
+  function step(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    bgMusic.volume = startVol * (1 - progress);
+    if (progress < 1) requestAnimationFrame(step);
+    else bgMusic.pause();
+  }
+ 
+  requestAnimationFrame(step);
+}
+
 // ── Death ──────────────────────────────────────────────────────────────────────
 function triggerDeath() {
   GameState.state = 'dead';
   document.getElementById('game-wrapper').classList.remove('expanded');
-
+ 
   const best = localStorage.getItem('bestScore') || 0;
   if (GameState.score > best) localStorage.setItem('bestScore', GameState.score);
-
-  document.getElementById('game-over').style.display = 'flex';
+ 
+  fadeOutMusic(1500);
   if (loseSound) loseSound.play();
+ 
+  // Delay showing game-over screen so the death animation has a moment to play
+  setTimeout(() => {
+    document.getElementById('game-over').style.display = 'flex';
+  }, 400);
 }
-
 // ── Game loop ──────────────────────────────────────────────────────────────────
 function loop() {
   GameState.animId = requestAnimationFrame(loop);
