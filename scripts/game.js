@@ -58,6 +58,7 @@ export class Game {
 //
   triggerDeath() {
   GameState.state = 'dead';
+  document.getElementById('game-wrapper').classList.remove('expanded');
   console.log('Score:', GameState.score);
 
   const best = localStorage.getItem('bestScore') || 0;
@@ -89,13 +90,16 @@ export class Game {
     GameState.best = localStorage.getItem('bestScore') || 0;
     document.getElementById('best-score').textContent = GameState.best;
     GameState.score = 0;
-    document.getElementById('current-score').textContent = 0;  // ← add this
+    document.getElementById('current-score').textContent = 0;
     GameState.speed   = BASE_SPEED;
     GameState.frame   = 0;
     GameState.bgX     = 0;
     GameState.gndX    = 0;
     GameState.isDucking = false;
     GameState.state   = 'running';
+
+    // Expand the game wrapper to 90% of the viewport
+    document.getElementById('game-wrapper').classList.add('expanded');
 
     this.ostrich.reset();
     this.obstacleManager.reset();
