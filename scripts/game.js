@@ -25,8 +25,11 @@ export class Game {
   }
 
   update() {
-    this.bg.update();
-    this.ground.update();
+    // Ramp up speed every frame, capped at MAX_SPEED
+    GameState.speed = Math.min(MAX_SPEED, GameState.speed + ACCEL);
+
+    this.bg.update(GameState.speed);
+    this.ground.update(GameState.speed);
     this.treeSpawner.update();
     this.obstacleManager.update(GameState.speed);
     this.ostrich.update();
@@ -90,7 +93,7 @@ export class Game {
     GameState.best = localStorage.getItem('bestScore') || 0;
     document.getElementById('best-score').textContent = GameState.best;
     GameState.score = 0;
-    document.getElementById('current-score').textContent = 0;
+    document.getElementById('current-score').textContent = 0;  // ← add this
     GameState.speed   = BASE_SPEED;
     GameState.frame   = 0;
     GameState.bgX     = 0;
