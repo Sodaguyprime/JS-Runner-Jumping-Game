@@ -1,19 +1,13 @@
-import { Game } from './game.js';
 import { preloadImages } from './util.js';
+import { initGame } from './game.js';
 
 async function bootstrap() {
   try {
-    // Wait for every image to load before starting anything
     await preloadImages();
-    console.log("images loaded");
-    // All images are now in LoadedImages — safe to start the game
+    console.log('Images loaded');
     const canvas = document.getElementById('gameCanvas');
-    const game = new Game(canvas);
-    game.init();
-
+    initGame(canvas);
   } catch (err) {
-    // If any image fails to load, show a user-friendly error instead of
-    // a blank canvas or a cryptic console message.
     console.error('Game failed to start:', err);
     document.body.innerHTML = `
       <div style="
@@ -26,13 +20,10 @@ async function bootstrap() {
           Make sure the <code>assets/</code> folder is in the same directory
           as <code>index.html</code> and all image files are present.
         </p>
-        <p style="margin-top:8px; font-size:.7rem; color:#7b5e3a;">
-          ${err.message}
-        </p>
+        <p style="margin-top:8px; font-size:.7rem; color:#7b5e3a;">${err.message}</p>
       </div>
     `;
   }
 }
 
-// Start immediately when the DOM is ready
 bootstrap();

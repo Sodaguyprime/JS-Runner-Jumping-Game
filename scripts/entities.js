@@ -1,64 +1,64 @@
-//---------------------------------Trees------------------------------//
+import { GAME_CONFIG } from './assets.js';
 
-class Tree {
-  constructor(canvas, ctx, imgSrc, width, height) {
-    this.canvas = canvas;
-    this.ctx = ctx;
-    this.img = new Image();
-    this.img.src = imgSrc;
-    this.width = width;
-    this.height = height;
-    this.x = canvas.width; // start off-screen right
-    this.y = canvas.height - height - 32; // sit on top of ground
-    this.speed = 1;
-    this.active = true;
-  }
+const { CANVAS_W, CANVAS_H } = GAME_CONFIG;
 
-  update() {
-    this.x -= this.speed;
-    if (this.x + this.width < 0) this.active = false; // off-screen left
-  }
+const TREE_SOURCES = [
+  { src: 'assets/tree1.png', width: 25, height: 30 },
+  { src: 'assets/tree2.png', width: 25, height: 30 },
+];
 
-  draw() {
-    this.ctx.globalAlpha = 0.6;
-    this.ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-    this.ctx.globalAlpha = 1.0;
-  }
+// Preloaded tree images
+const treeImages = {};
+for (const t of TREE_SOURCES) {
+  const img = new Image();
+  img.src = t.src;
+  treeImages[t.src] = img;
 }
 
-export class TreeSpawner {
-  constructor(canvas, ctx) {
-    this.canvas = canvas;
-    this.ctx = ctx;
-    this.trees = [];
-    this.spawnTimer = 0;
-    this.spawnInterval = Math.floor(Math.random() * 81) + 120; 
-    this.treeSources = [
-      { src: 'assets/tree1.png', width: 25, height: 30},
-      { src: 'assets/tree2.png', width: 25, height: 30},
-    ];
-  }
+// Active tree objects: [{ x, y, width, height, src, active }]
+let trees = [];
+let spawnTimer = 0;
+let spawnInterval = Math.floor(Math.random() * 81) + 120;
 
-  spawnTree() {
-    const type = this.treeSources[Math.floor(Math.random() * this.treeSources.length)];
-    this.trees.push(new Tree(this.canvas, this.ctx, type.src, type.width, type.height));
-  }
-
-  update() {
-    this.spawnTimer++;
-    if (this.spawnTimer >= this.spawnInterval) {
-      this.spawnTree();
-      this.spawnTimer = 0;
-      this.spawnInterval = Math.floor(Math.random() * 40) + 120;
-    }
-
-    for (const tree of this.trees) tree.update();
-    this.trees = this.trees.filter(t => t.active);
-  }
-
-  draw() {
-    for (const tree of this.trees) tree.draw();
-  }
+function spawnTree() {
+  const type = TREE_SOURCES[Math.floor(Math.random() * TREE_SOURCES.length)];
+  trees.push({
+    x:      CANVAS_W,
+    y:      CANVAS_H - type.height - 32,
+    width:  type.width,
+    height: type.height,
+    src:    type.src,
+    active: true,
+  });
 }
 
-//------------------------------End of Trees-----------------------------//
+export function resetTrees() {
+  trees = [];
+  spawnTimer = 0;
+  spawnInterval = Math.floor(Math.random() * 81) + 120;
+}
+
+export function updateTrees(speed) {
+  spawnTimer++;
+  if (spawnTimer >= spawnInterval) {
+    spawnTree();
+    spawnTimer = 0;
+    spawnInterval = Math.floor(Math.random() * 40) + 120;
+  }
+
+  for (const tree of trees) {
+    // Trees scroll at 40% of game speed — mid-layer parallax
+    tree.x -= speed * 0.4;
+    if (tree.x + tree.width < 0) tree.active = false;
+  }
+
+  trees = trees.filter(t => t.active);
+}
+
+export function drawTrees(ctx) {
+  for (const tree of trees) {
+    ctx.globalAlpha = 0.6;
+    ctx.drawImage(treeImages[tree.src], tree.x, tree.y, tree.width, tree.height);
+    ctx.globalAlpha = 1.0;
+  }
+}

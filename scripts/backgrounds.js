@@ -1,49 +1,39 @@
-import { LoadedImages, GAME_CONFIG } from "./assets.js";
+import { LoadedImages, GAME_CONFIG } from './assets.js';
 
-const {CANVAS_W, CANVAS_H} = GAME_CONFIG;
+const { CANVAS_W, CANVAS_H } = GAME_CONFIG;
 
-export class Background {
-  constructor(ctx) {
-    this.ctx = ctx;
-    this.img = new Image();
-    this.img.src = '../assets/Backgrounds.png';
-    this.x = 0;
-    this.speed = 1;
-  }
+// ── Background ────────────────────────────────────────────────────────────────
 
-  update(speed) {
-    this.x -= speed * 0.05;
-    if (this.x <= -CANVAS_W) {
-      this.x = 0;
-    }
-  }
+export const bg = {
+  x: 0,
+};
 
-  draw() {
-    // Draw it twice side by side so there's no gap when it scrolls
-    this.ctx.drawImage(LoadedImages.bg, this.x, 0, CANVAS_W, CANVAS_H);
-    this.ctx.drawImage(LoadedImages.bg, this.x + CANVAS_W, 0, CANVAS_W, CANVAS_H);
-  }
+export function updateBg(speed) {
+  // Background drifts slowly for a parallax feel (3% of game speed)
+  bg.x -= speed * 0.03;
+  if (bg.x <= -CANVAS_W) bg.x = 0;
 }
 
-//----------------------------------------------------------------Ground-----------------------------------------------------------------//
+export function drawBg(ctx) {
+  ctx.drawImage(LoadedImages.bg, bg.x, 0, CANVAS_W, CANVAS_H);
+  ctx.drawImage(LoadedImages.bg, bg.x + CANVAS_W, 0, CANVAS_W, CANVAS_H);
+}
 
+// ── Ground ────────────────────────────────────────────────────────────────────
 
-export class Ground {
-  constructor(ctx) {
-    this.ctx = ctx;
-    this.x = 0;
-    this.speed = 2;
-    this.height = 32;
-    this.y = CANVAS_H - this.height;
-  }
+const GROUND_H = 32;
 
-  update(speed) {
-    this.x -= speed; // ground scrolls at full game speed
-    if (this.x <= -CANVAS_W) this.x = 0;
-  }
+export const ground = {
+  x: 0,
+  y: CANVAS_H - GROUND_H,
+};
 
-  draw() {
-    this.ctx.drawImage(LoadedImages.ground, this.x, this.y, CANVAS_W, this.height);
-    this.ctx.drawImage(LoadedImages.ground, this.x + CANVAS_W, this.y, CANVAS_W, this.height);
-  }
+export function updateGround(speed) {
+  ground.x -= speed;
+  if (ground.x <= -CANVAS_W) ground.x = 0;
+}
+
+export function drawGround(ctx) {
+  ctx.drawImage(LoadedImages.ground, ground.x, ground.y, CANVAS_W, GROUND_H);
+  ctx.drawImage(LoadedImages.ground, ground.x + CANVAS_W, ground.y, CANVAS_W, GROUND_H);
 }
