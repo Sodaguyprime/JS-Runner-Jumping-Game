@@ -11,9 +11,8 @@ export class Background {
     this.speed = 1;
   }
 
-  update() {
-    this.x -= this.speed;
-    // Reset when the image has scrolled one full width
+  update(speed) {
+    this.x -= speed * 0.05;
     if (this.x <= -CANVAS_W) {
       this.x = 0;
     }
@@ -38,8 +37,8 @@ export class Ground {
     this.y = CANVAS_H - this.height;
   }
 
-  update() {
-    this.x -= this.speed;
+  update(speed) {
+    this.x -= speed; // ground scrolls at full game speed
     if (this.x <= -CANVAS_W) this.x = 0;
   }
 
