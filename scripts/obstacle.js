@@ -12,8 +12,8 @@ const {
 
 const OBSTACLE_TYPES = [
   { img: 'rock1', w: 23, h: 15, aerial: false },
-  { img: 'rock2', w: 32, h: 32, aerial: false },
-  { img: 'rock3', w: 23, h: 15, aerial: false },
+  { img: 'rock2', w: 23, h: 10, aerial: false },
+  { img: 'rock3', w: 23, h: 15, aerial: false},
   {
     img: 'falcon',
     w: 22, h: 22,
@@ -135,5 +135,16 @@ export function drawObstacles(ctx) {
     }
   }
 
+  ctx.restore();
+}
+
+// ── Debug: draw hitboxes ───────────────────────────────────────────────────────
+export function drawObstacleHitboxes(ctx) {
+  ctx.save();
+  ctx.strokeStyle = 'red';
+  ctx.lineWidth   = 1.5;
+  for (const obs of obstacles) {
+    ctx.strokeRect(obs.x, obs.y, obs.w, obs.h);
+  }
   ctx.restore();
 }

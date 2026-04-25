@@ -1,8 +1,8 @@
 import { GAME_CONFIG, GameState } from './assets.js';
 import { updateBg, drawBg, updateGround, drawGround, bg, ground } from './backgrounds.js';
 import { updateTrees, drawTrees, resetTrees } from './entities.js';
-import { updateOstrich, drawOstrich, resetOstrich } from './ostrich.js';
-import { updateObstacles, drawObstacles, getAllObstacles, resetObstacles } from './obstacle.js';
+import { updateOstrich, drawOstrich, drawOstrichHitbox, resetOstrich } from './ostrich.js';
+import { updateObstacles, drawObstacles, drawObstacleHitboxes, getAllObstacles, resetObstacles } from './obstacle.js';
 import { collides } from './collision.js';
 import { initInput } from './input.js';
 
@@ -10,6 +10,7 @@ const { CANVAS_W, CANVAS_H, BASE_SPEED, MAX_SPEED, ACCEL, OSTRICH_X } = GAME_CON
 
 let canvas, ctx;
 let jumpSound, bgMusic, loseSound;
+let debugHitboxes = false;  // press D to toggle
 
 // ── Update ─────────────────────────────────────────────────────────────────────
 function update() {
@@ -40,6 +41,11 @@ function draw() {
   drawTrees(ctx);
   drawObstacles(ctx);
   drawOstrich(ctx);
+
+  if (debugHitboxes) {
+    drawObstacleHitboxes(ctx);
+    drawOstrichHitbox(ctx);
+  }
 }
 
 // ── Death ──────────────────────────────────────────────────────────────────────
@@ -131,4 +137,9 @@ export function initGame(canvasEl) {
   });
 
   initInput(startGame, canvas);
+
+  // Press D to toggle hitbox debug overlay
+  document.addEventListener('keydown', (e) => {
+    if (e.code === 'KeyD') debugHitboxes = !debugHitboxes;
+  });
 }

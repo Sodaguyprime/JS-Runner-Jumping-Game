@@ -143,3 +143,22 @@ export function drawOstrich(ctx) {
 
   ctx.restore();
 }
+
+// ── Debug: draw ostrich hitbox ─────────────────────────────────────────────────
+// Blue = full sprite bounds, green = actual collision hitbox (shrunk).
+export function drawOstrichHitbox(ctx) {
+  const { hx, hy, hw, hh } = getOstrichHitbox();
+  ctx.save();
+
+  // Full sprite outline (blue)
+  ctx.strokeStyle = 'blue';
+  ctx.lineWidth   = 1;
+  ctx.strokeRect(ostrich.x, ostrich.y, OSTRICH_W, OSTRICH_H);
+
+  // Actual hitbox (green)
+  ctx.strokeStyle = 'lime';
+  ctx.lineWidth   = 1.5;
+  ctx.strokeRect(hx, hy, hw, hh);
+
+  ctx.restore();
+}
