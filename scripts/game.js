@@ -34,6 +34,7 @@ export class Game {
   for (const obs of this.obstacleManager.getAll()) {
     if (!obs.scored && obs.x + obs.w < GAME_CONFIG.OSTRICH_X) {
       obs.scored = true;
+       this.jumpSound.play(); 
       GameState.score++;
       document.getElementById('current-score').textContent = GameState.score;
     }
@@ -103,6 +104,7 @@ export class Game {
   }
 
   init() {
+    this.jumpSound = document.getElementById('jump-sound');
     this.bgMusic = document.getElementById('bg-music');
   this.loseSound = document.getElementById('lose-sound');
     const retryBtn = document.getElementById('retry-btn');
