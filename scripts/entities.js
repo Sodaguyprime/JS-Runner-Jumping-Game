@@ -3,8 +3,8 @@ import { GAME_CONFIG } from './assets.js';
 const { CANVAS_W, CANVAS_H } = GAME_CONFIG;
 
 const TREE_SOURCES = [
-  { src: 'assets/tree1.png', width: 25, height: 30 },
-  { src: 'assets/tree2.png', width: 25, height: 30 },
+  { src: 'assets/tree1.png', width: 35, height: 55 },
+  { src: 'assets/tree2.png', width: 35, height: 55 },
 ];
 
 // Preloaded tree images

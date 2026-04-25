@@ -35,7 +35,7 @@ export const GAME_CONFIG = {
   BG_H:        144,
   GND_W:       254,
   GND_H:       16,
-  GRAVITY:     0.6,
+  GRAVITY:     0.5,
   JUMP_V:      -13.5,
   DUCK_SHRINK: 0.65,
 

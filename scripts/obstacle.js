@@ -137,3 +137,14 @@ export function drawObstacles(ctx) {
 
   ctx.restore();
 }
+
+// ── Debug: draw hitboxes ───────────────────────────────────────────────────────
+export function drawObstacleHitboxes(ctx) {
+  ctx.save();
+  ctx.strokeStyle = 'red';
+  ctx.lineWidth   = 1.5;
+  for (const obs of obstacles) {
+    ctx.strokeRect(obs.x, obs.y, obs.w, obs.h);
+  }
+  ctx.restore();
+}

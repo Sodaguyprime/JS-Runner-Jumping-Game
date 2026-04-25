@@ -1,8 +1,8 @@
 import { GAME_CONFIG, GameState } from './assets.js';
 import { updateBg, drawBg, updateGround, drawGround, bg, ground } from './backgrounds.js';
 import { updateTrees, drawTrees, resetTrees } from './entities.js';
-import { updateOstrich, drawOstrich, resetOstrich } from './ostrich.js';
-import { updateObstacles, drawObstacles, getAllObstacles, resetObstacles } from './obstacle.js';
+import { updateOstrich, drawOstrich, drawOstrichHitbox, resetOstrich } from './ostrich.js';
+import { updateObstacles, drawObstacles, drawObstacleHitboxes, getAllObstacles, resetObstacles } from './obstacle.js';
 import { collides } from './collision.js';
 import { initInput } from './input.js';
 
@@ -10,6 +10,7 @@ const { CANVAS_W, CANVAS_H, BASE_SPEED, MAX_SPEED, ACCEL, OSTRICH_X } = GAME_CON
 
 let canvas, ctx;
 let jumpSound, bgMusic, loseSound;
+let debugHitboxes = false;  // press D to toggle
 
 // ── Update ─────────────────────────────────────────────────────────────────────
 function update() {
@@ -40,20 +41,46 @@ function draw() {
   drawTrees(ctx);
   drawObstacles(ctx);
   drawOstrich(ctx);
+
+  if (debugHitboxes) {
+    drawObstacleHitboxes(ctx);
+    drawOstrichHitbox(ctx);
+  }
+}
+
+
+function fadeOutMusic(duration = 1500) {
+  if (!bgMusic) return;
+  const startVol = bgMusic.volume;
+  const startTime = performance.now();
+ 
+  function step(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    bgMusic.volume = startVol * (1 - progress);
+    if (progress < 1) requestAnimationFrame(step);
+    else bgMusic.pause();
+  }
+ 
+  requestAnimationFrame(step);
 }
 
 // ── Death ──────────────────────────────────────────────────────────────────────
 function triggerDeath() {
   GameState.state = 'dead';
   document.getElementById('game-wrapper').classList.remove('expanded');
-
+ 
   const best = localStorage.getItem('bestScore') || 0;
   if (GameState.score > best) localStorage.setItem('bestScore', GameState.score);
-
-  document.getElementById('game-over').style.display = 'flex';
+ 
+  fadeOutMusic(1500);
   if (loseSound) loseSound.play();
+ 
+  // Delay showing game-over screen so the death animation has a moment to play
+  setTimeout(() => {
+    document.getElementById('game-over').style.display = 'flex';
+  }, 400);
 }
-
 // ── Game loop ──────────────────────────────────────────────────────────────────
 function loop() {
   GameState.animId = requestAnimationFrame(loop);
@@ -131,4 +158,9 @@ export function initGame(canvasEl) {
   });
 
   initInput(startGame, canvas);
+
+  // Press D to toggle hitbox debug overlay
+  document.addEventListener('keydown', (e) => {
+    if (e.code === 'KeyD') debugHitboxes = !debugHitboxes;
+  });
 }
