@@ -49,26 +49,39 @@ function draw() {
 }
 
 
+let fadeRafId = null;
+
+function cancelFade() {
+  if (fadeRafId !== null) {
+    cancelAnimationFrame(fadeRafId);
+    fadeRafId = null;
+  }
+}
+
 function fadeOutMusic(duration = 1500) {
   if (!bgMusic) return;
+  cancelFade();
   const startVol = bgMusic.volume;
   const startTime = performance.now();
- 
+
   function step(now) {
     const elapsed = now - startTime;
     const progress = Math.min(elapsed / duration, 1);
     bgMusic.volume = startVol * (1 - progress);
-    if (progress < 1) requestAnimationFrame(step);
-    else bgMusic.pause();
+    if (progress < 1) {
+      fadeRafId = requestAnimationFrame(step);
+    } else {
+      fadeRafId = null;
+      bgMusic.pause();
+    }
   }
- 
-  requestAnimationFrame(step);
+
+  fadeRafId = requestAnimationFrame(step);
 }
 
 // ── Death ──────────────────────────────────────────────────────────────────────
 function triggerDeath() {
   GameState.state = 'dead';
-  document.getElementById('game-wrapper').classList.remove('expanded');
  
   const best = localStorage.getItem('bestScore') || 0;
   if (GameState.score > best) localStorage.setItem('bestScore', GameState.score);
@@ -98,7 +111,12 @@ function loop() {
 
 // ── Start / reset ──────────────────────────────────────────────────────────────
 function startGame() {
-  if (bgMusic) bgMusic.play();
+  cancelFade();
+  if (bgMusic) {
+    bgMusic.volume = 1;
+    bgMusic.currentTime = 0;
+    bgMusic.play();
+  }
 
   GameState.best = localStorage.getItem('bestScore') || 0;
   document.getElementById('best-score').textContent = GameState.best;
@@ -115,7 +133,6 @@ function startGame() {
   bg.x     = 0;
   ground.x = 0;
 
-  document.getElementById('game-wrapper').classList.add('expanded');
 
   resetOstrich();
   resetObstacles();
@@ -146,6 +163,17 @@ export function initGame(canvasEl) {
   document.getElementById('play-btn').addEventListener('click', () => {
     document.getElementById('menu').style.display = 'none';
     startGame();
+  });
+
+  // Instructions button
+  document.getElementById('how-to-btn').addEventListener('click', () => {
+    document.getElementById('menu').style.display = 'none';
+    document.getElementById('instructions').style.display = 'flex';
+  });
+
+  document.getElementById('back-btn').addEventListener('click', () => {
+    document.getElementById('instructions').style.display = 'none';
+    document.getElementById('menu').style.display = 'flex';
   });
 
   // Mute toggle

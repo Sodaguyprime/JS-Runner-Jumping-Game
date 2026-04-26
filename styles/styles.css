@@ -18,17 +18,10 @@ body {
   width: 800px;
   height: 300px;
   flex-shrink: 0;
-  transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-              height 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   box-shadow:
     0 0 0 2px #5c3a1a,
     0 0 40px 8px rgba(180, 120, 40, 0.25),
     0 8px 40px rgba(0,0,0,0.7);
-}
-
-#game-wrapper.expanded {
-  width: 90vw;
-  height: 60vh;
 }
 
 canvas {
@@ -47,24 +40,31 @@ canvas {
   gap: 24px;
   font-family: 'Press Start 2P', monospace;
   font-size: 13px;
-  color: rgb(255, 255, 255);
+  color: #fff;
   pointer-events: none;
   z-index: 10;
   text-shadow: 1px 1px 0 #000;
 }
 
-#menu {
+/* ── Shared overlay base ───────────────────────────────── */
+#menu,
+#game-over,
+#instructions {
   position: absolute;
   inset: 0;
-  background: transparent;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 100;
-  gap: 0;
 }
 
+#game-over,
+#instructions {
+  display: none;
+}
+
+/* ── Menu ──────────────────────────────────────────────── */
 .title-small {
   font-family: 'Press Start 2P', monospace;
   font-size: 14px;
@@ -83,24 +83,43 @@ canvas {
   letter-spacing: 3px;
 }
 
-#play-btn {
+.menu-label {
   font-family: 'Press Start 2P', monospace;
-  font-size: 16px;
-  padding: 12px 36px;
+  font-size: 10px;
+  color: #fff;
+  position: absolute;
+  bottom: 10px;
+}
+
+/* ── Buttons ───────────────────────────────────────────── */
+#play-btn,
+#how-to-btn,
+#retry-btn,
+#back-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 13px;
+  padding: 10px 28px;
   cursor: pointer;
   background: #6b4fa0;
   color: #f0d5a3;
   border: 4px solid #4a3475;
   box-shadow: 0px 6px 0px #322152;
   transition: transform 0.1s;
+  margin-top: 8px;
 }
 
-#play-btn:hover {
+#play-btn:hover,
+#how-to-btn:hover,
+#retry-btn:hover,
+#back-btn:hover {
   background: #7d5fb8;
   transform: translateY(-2px);
 }
 
-#play-btn:active {
+#play-btn:active,
+#how-to-btn:active,
+#retry-btn:active,
+#back-btn:active {
   transform: translateY(4px);
   box-shadow: 0px 2px 0px #322152;
 }
@@ -113,36 +132,35 @@ canvas {
   margin-top: 8px;
 }
 
-.menu-label {
+/* ── Instructions ──────────────────────────────────────── */
+.instructions-title {
   font-family: 'Press Start 2P', monospace;
-  font-size: 10px;
-  color: white;
-  position: absolute;
-  bottom: 10px;
+  font-size: 12px;
+  color: #f0d5a3;
+  text-shadow: 2px 2px 0px #8b5e34;
+  letter-spacing: 2px;
+  margin: 0 0 16px 0;
 }
 
-#game-over {
-  position: absolute;
-  inset: 0;
-  display: none;
-  flex-direction: column;
+.instruction-row {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  z-index: 100;
-  gap: 12px;
+  gap: 16px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: #fff;
+  margin-bottom: 10px;
 }
 
-#retry-btn {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 16px;
-  padding: 12px 32px;
-  cursor: pointer;
-  border: 3px solid #f0d5a3;
-  background: #1a0e00;
+.instruction-key {
+  background: #4a3475;
+  border: 2px solid #6b4fa0;
+  padding: 4px 8px;
+  min-width: 90px;
+  text-align: center;
   color: #f0d5a3;
 }
 
-#retry-btn:hover {
-  background: #f0d5a3;
-  color: #1a0e00;
+.instruction-desc {
+  color: #ccc;
 }
